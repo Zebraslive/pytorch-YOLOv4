@@ -99,6 +99,7 @@ def nms_cpu(boxes, confs, nms_thresh=0.5, min_mode=False):
 def plot_boxes_cv2(img, boxes, savename=None, class_names=None, color=None):
     import cv2
     img = np.copy(img)
+    imgold = np.copy(img)
     colors = np.array([[1, 0, 1], [0, 0, 1], [0, 1, 1], [0, 1, 0], [1, 1, 0], [1, 0, 0]], dtype=np.float32)
 
     def get_color(c, x, max_val):
@@ -139,7 +140,7 @@ def plot_boxes_cv2(img, boxes, savename=None, class_names=None, color=None):
             c3 = (c1[0] + t_size[0], c1[1] - t_size[1] - 3)
             cv2.rectangle(img, c1, (int(np.float32(c3[0])), int(np.float32(c3[1]))), rgb, -1)
             img = cv2.putText(img, msg, (c1[0], int(np.float32(c1[1] - 2))), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), bbox_thick // 2, lineType=cv2.LINE_AA)
-        cropped_img = img[y1-1:y2 - 1, x1-1:x2 - 1]
+        cropped_img = imgold[y1:y2 + 1, x1:x2 + 1]
         img = cv2.rectangle(img, (x1, y1), (x2, y2), rgb, bbox_thick)
     if savename:
         print("save plot results to %s" % savename)
